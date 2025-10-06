@@ -1,33 +1,143 @@
-import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
-import mongoose from "mongoose";
-const app = express();
+# 🧠 MongoDB + Mongoose + Express CRUD API
 
-import { MongoClient, ServerApiVersion } from "mongodb";
-const uri =
-"mongodb+srv://Bhalchandra:Bhalchandra%409099@practice.6evxvsz.mongodb.net/?retryWrites=true&w=majority&appName=practice";
+This project demonstrates how to connect a **Node.js + Express** server to **MongoDB Atlas** using **Mongoose**, and perform full **CRUD (Create, Read, Update, Delete)** operations.
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-serverApi: {
-version: ServerApiVersion.v1,
-strict: true,
-deprecationErrors: true,
-},
+---
+
+## 🚀 Features
+
+- Connects MongoDB Atlas using Mongoose
+- Simple Express server setup
+- CRUD operations on user data
+- Organized project structure
+- Environment variable support via `.env`
+
+---
+
+## 📂 Folder Structure
+
+```
+project/
+│
+├── .env
+├── index.js
+├── package.json
+├── .gitignore
+├── readme.md
+│
+├── db/
+│   └── index.js          # MongoDB connection setup
+│
+├── models/
+│   └── user.model.js     # Mongoose schema/model
+│
+└── routes/
+    └── user.routes.js    # CRUD API routes
+```
+
+---
+
+## ⚙️ Installation & Setup
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone <repo-url>
+cd MONGODB_PRACTICE
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Create `.env` file
+
+Add your MongoDB URI and server port inside a `.env` file:
+
+```env
+PORT=your_PORT
+MONGODB_URI=your_MongoDB_URL
+```
+
+> ⚠️ make your port and MONGODB_URL
+
+---
+
+## 💻 Run the Server
+
+```bash
+npx nodemon index.js
+```
+
+or
+
+```bash
+npm run dev
+```
+
+You should see:
+
+```
+✅ MongoDB connected: cluster0.mongodb.net/practiceDB
+🚀 Server running on port 8000
+```
+
+---
+
+## 🧾 API Endpoints
+
+| Method     | Endpoint         | Description             | Example Body                                                 |
+| ---------- | ---------------- | ----------------------- | ------------------------------------------------------------ |
+| **POST**   | `/api/users`     | Create a new user       | `{ "name": "Ankur", "email": "ankur@gmail.com", "age": 24 }` |
+| **GET**    | `/api/users`     | Get all users           | —                                                            |
+| **GET**    | `/api/users/:id` | Get a single user by ID | —                                                            |
+| **PUT**    | `/api/users/:id` | Update user details     | `{ "name": "Updated Name" }`                                 |
+| **DELETE** | `/api/users/:id` | Delete a user           | —                                                            |
+
+---
+
+## 🧠 Example Mongoose Schema
+
+```js
+const userSchema = new mongoose.Schema({
+  name: String,
+  email: { type: String, unique: true },
+  age: Number,
 });
-async function run() {
-try {
-// Connect the client to the server (optional starting in v4.7)
-await client.connect();
-} finally {
-// Ensures that the client will close when you finish/error
-await client.close();
-}
-}
+```
 
-run().catch(console.dir);
+---
 
-app.listen(8000, () => {
-console.log(`server is runnning at port `);
-});
+## 🧰 Tech Stack
+
+- **Node.js** — JavaScript runtime
+- **Express** — Web framework
+- **MongoDB Atlas** — Cloud database
+- **Mongoose** — MongoDB object modeling
+- **dotenv** — Environment variable management
+- **cors** — Handle cross-origin requests
+
+---
+
+## 🧩 Troubleshooting
+
+### ❌ "MongoNetworkError" or "Failed to connect to server"
+
+- Check that your **MongoDB Atlas IP whitelist** includes your current IP (`0.0.0.0/0` for testing).
+- Ensure your **username** and **password** are correct.
+- Make sure your `.env` file path is correct and loaded **before** using `mongoose.connect()`.
+
+### ❌ "URI malformed" or "Invalid namespace"
+
+- Ensure your `.env` connection string has a database name:
+  ```
+  mongodb+srv://<user>:<pass>@cluster.mongodb.net/myDatabase
+  ```
+
+---
+
+## 📜 License
+
+This project is open-source and available under the [MIT License](LICENSE).
